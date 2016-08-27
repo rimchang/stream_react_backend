@@ -11,11 +11,13 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ('id','user_id','upload_id','comment')
 
 
-class UploadSerializer(serializers.ModelSerializer):  
+class UploadSerializer(serializers.ModelSerializer): 
     id = serializers.ReadOnlyField()
+    comments = serializers.SlugRelatedField(many=True,read_only=True,slug_field='comment')
+    
     class Meta:
         model = models.Upload
-        fields = ('id','user_id','image_file','caption','location','latitude','longitude')
+        fields = ('id','user_id','image_file','caption','location','latitude','longitude','comments')
 
 
 class LikeSerializer(serializers.ModelSerializer):  
@@ -50,6 +52,8 @@ class GenericRelatedField(serializers.Field):
             return UploadSerializer(value).data
         if isinstance(value, models.Follow):
             return FollowSerializer(value).data
+        if isinstance(value, User):
+            return UserSerializer(value).data
         # Not found - return string.
         return str(value)
 

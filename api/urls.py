@@ -5,7 +5,7 @@ from . import views
 
 router = DefaultRouter()  
 router.register(r'comments', views.CommentViewSet)
-router.register(r'uploads', views.UploadViewSet)
+router.register(r'uploads', views.UploadViewSet, base_name='uploads')
 router.register(r'likes', views.LikeViewSet)
 router.register(r'follows', views.FollowViewSet)
 router.register(r'users', views.UserViewSet)

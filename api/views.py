@@ -23,8 +23,13 @@ class UploadViewSet(viewsets.ModelViewSet):
     이 뷰셋은 `list`와 `create`, `retrieve`, `update`, 'destroy` 기능을 자동으로 지원합니다
 
     """
-    queryset=models.Upload.objects.all()
     serializer_class=serializers.UploadSerializer
+    
+    def get_queryset(self):
+        actor_id = self.request.GET.get('actor_id')
+        if actor_id and actor_id != 'false' and actor_id != '1':
+            return models.Upload.objects.filter(user_id=actor_id)
+        return models.Upload.objects.all()
     
 class LikeViewSet(viewsets.ModelViewSet):
     """
@@ -58,6 +63,8 @@ class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.ActionSerializer
 
     def get_queryset(self):
+        
+        #/api/activity/?following=1
         following = self.request.GET.get('following')
         if following and following != 'false' and following != '0':
             if following == 'myself':
