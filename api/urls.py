@@ -13,5 +13,5 @@ router.register(r'activity', views.ActivityViewSet, base_name='activity')
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-    
+
 ]
