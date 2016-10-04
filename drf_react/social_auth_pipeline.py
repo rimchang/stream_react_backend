@@ -4,7 +4,7 @@ from urllib2 import urlopen, HTTPError
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.core.files.base import ContentFile
-from models import UserProfile
+from django.contrib.auth.models.User import UserProfile
 
 
 def get_profile_data(backend, details, response, social_user,

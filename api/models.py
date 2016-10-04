@@ -5,7 +5,10 @@ from django.utils import timezone
 from slugify import slugify
 from django.db.models import F
 from django.contrib.auth.models import User
+from django.forms.fields import ImageField
 
+
+from actstream import action
 from actstream.actions import follow, unfollow
 
 class BaseModel(models.Model):
@@ -56,7 +59,7 @@ class Upload(BaseModel):
 	user_id = models.ForeignKey('auth.User')
 	image_file = models.ImageField(upload_to='original/%Y/%m/%d')
 	caption = models.TextField(max_length=500, blank=True)
-	location = models.CharField(max_length=100)
+	location = models.CharField(max_length=120)
 	latitude = models.FloatField()
 	longitude = models.FloatField()
 	
@@ -81,5 +84,3 @@ class Hashtag(models.Model):
     name = models.CharField(max_length=160)
     occurrences = models.IntegerField(default=0)
     
-from django.db.models.signals import post_save
-from actstream import action

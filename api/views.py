@@ -6,10 +6,6 @@ from . import models
 from . import serializers
 from django.contrib.auth.models import User
 
-#stream_django
-from stream_django.enrich import Enrich
-from stream_django.feed_manager import feed_manager
-
 class CommentViewSet(viewsets.ModelViewSet):
     """
     이 뷰셋은 `list`와 `create`, `retrieve`, `update`, 'destroy` 기능을 자동으로 지원합니다
@@ -28,8 +24,8 @@ class UploadViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         actor_id = self.request.GET.get('actor_id')
         if actor_id and actor_id != 'false' and actor_id != '1':
-            return models.Upload.objects.filter(user_id=actor_id)
-        return models.Upload.objects.all()
+            return models.Upload.objects.filter(user_id=actor_id).order_by('-created_at')
+        return models.Upload.objects.all().order_by('-created_at')
     
 class LikeViewSet(viewsets.ModelViewSet):
     """

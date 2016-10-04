@@ -1,10 +1,13 @@
 from django.contrib import admin
-from .models import Comment,Follow,Search,Like,Upload,Hashtag
+from django.contrib.auth.models import User
+from . import models
 
 # Register your models here.
-admin.site.register(Comment)
-admin.site.register(Follow)
-admin.site.register(Search)
-admin.site.register(Like)
-admin.site.register(Upload)
-admin.site.register(Hashtag)
+admin.site.register(models.Comment)
+admin.site.register(models.Follow)
+admin.site.register(models.Search)
+admin.site.register(models.Like)
+admin.site.register(models.Upload)
+admin.site.register(models.Hashtag)
+#admin.site.register(models.UserProfile)
+

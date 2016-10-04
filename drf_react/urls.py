@@ -23,3 +23,7 @@ urlpatterns = [
     url(r'^api/', include('api.urls')),
     url(r'^auth/', include('rest_framework_social_oauth2.urls')),
 ]
+
+from django.conf import settings
+from django.conf.urls.static import static
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

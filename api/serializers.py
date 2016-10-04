@@ -2,7 +2,10 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from . import models
 
-
+class BaseModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.BaseModel
+        fields=('created_at','modified_at')
 
 class CommentSerializer(serializers.ModelSerializer):  
     id = serializers.ReadOnlyField()
@@ -13,11 +16,14 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class UploadSerializer(serializers.ModelSerializer): 
     id = serializers.ReadOnlyField()
+    #image_url = serializers.SerializerMethodField('get_image_url')
     comments = serializers.SlugRelatedField(many=True,read_only=True,slug_field='comment')
     
-    class Meta:
+    class Meta(BaseModelSerializer.Meta):
         model = models.Upload
-        fields = ('id','user_id','image_file','caption','location','latitude','longitude','comments')
+        #fields = ('id','user_id','image_file','image_url','caption','location','latitude','longitude','comments')
+        fields = ('id','user_id','image_file','caption','location','latitude','longitude','comments','created_at','modified_at')
+
 
 
 class LikeSerializer(serializers.ModelSerializer):  

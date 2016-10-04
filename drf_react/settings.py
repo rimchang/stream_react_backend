@@ -4,8 +4,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = '8pfjn-mek-^#aec)i5*x8i#ft0nip&!wns$4md15reh!2d%++j'
 
-#DEBUG=False
-DEBUG = os.environ.get('DEBUG', 'on') == 'on'
+DEBUG=False
+#DEBUG = os.environ.get('DEBUG', 'on') == 'on'
 
 ALLOWED_HOSTS = ["*"]
 
@@ -19,7 +19,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     #third party apps
     'rest_framework',
-    'webpack_loader',
+    # for cors
+    'corsheaders',
     
     # OAuth
     'oauth2_provider',
@@ -35,6 +36,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -103,16 +105,7 @@ STATICFILES_DIRS = (
 	os.path.join(BASE_DIR, 'assets'),
 )
 
-####
-#WEBPACK
-####
 
-WEBPACK_LOADER = {
-	'DEFAULT': {
-	'BUNDLE_DIR_NAME': 'bundles/',
-	'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
-	}
-}
 
 REST_FRAMEWORK = {
 
@@ -146,8 +139,8 @@ SOCIAL_AUTH_FACEBOOK_SECRET = 'b5749840e10b13f1aa79d7d5a2f4077b'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-  'locale': 'ru_RU',
-  'fields': 'id, name, email, age_range'
+    'locale': 'ru_RU',
+    'fields': 'id, name, email, age_range'
 }
 
 
@@ -159,11 +152,22 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.associate_by_email',
     'social.pipeline.user.get_username',
     'social.pipeline.user.create_user',
+    
+    'drf_react.social_auth_pipeline.get_profile_data', # custom
+    'drf_react.social_auth_pipeline.get_profile_avatar', # custom
+    
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
-    'drf_react.social_auth_pipeline.get_profile_data', # custom
-    'drf_react.social_auth_pipeline.get_profile_avatar', # custom
+    'drf_react.pipeline.get_avatar',
 )
 
-PROPRIETARY_BACKEND_NAME="facebook"
+PROPRIETARY_BACKEND_NAME="Facebook"
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'collected_statics')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
