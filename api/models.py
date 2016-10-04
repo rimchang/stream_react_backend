@@ -84,3 +84,18 @@ class Hashtag(models.Model):
     name = models.CharField(max_length=160)
     occurrences = models.IntegerField(default=0)
     
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, primary_key=True)
+    age_range = models.CharField(max_length=160,null=True)
+    gender = models.CharField(max_length=160,null=True)
+    locale = models.CharField(max_length=160,null=True)
+    link = models.CharField(max_length=160,null=True)
+    profile_photo = models.ImageField(upload_to='profile_photo/%Y/%m/%d',null=True)
+
+
+"""
+    email = models.CharField(max_length=160,null=True)
+    age_range = models.CharField(max_length=160)
+    profile_photo = models.ImageField(upload_to='profile_photo/%Y/%m/%d')
+"""

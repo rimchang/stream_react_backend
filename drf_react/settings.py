@@ -132,15 +132,15 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Facebook configuration
-SOCIAL_AUTH_FACEBOOK_KEY = '1407746366198745'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'b5749840e10b13f1aa79d7d5a2f4077b'
+SOCIAL_AUTH_FACEBOOK_KEY = '1411426919164023'
+SOCIAL_AUTH_FACEBOOK_SECRET = '2d655c466e3193edac9ea21f5d445602'
 
 # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from facebook. Email is not sent by default, to get it, you must request the email permission:
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'locale': 'ru_RU',
-    'fields': 'id, name, email, age_range'
+    'fields': 'id, name, email, age_range, gender ,locale, link'
 }
 
 
@@ -153,13 +153,15 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.user.get_username',
     'social.pipeline.user.create_user',
     
+    # here is requrirement
     'drf_react.social_auth_pipeline.get_profile_data', # custom
     'drf_react.social_auth_pipeline.get_profile_avatar', # custom
-    
+
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
-    'drf_react.pipeline.get_avatar',
+
+
 )
 
 PROPRIETARY_BACKEND_NAME="Facebook"
@@ -171,3 +173,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collected_statics')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
