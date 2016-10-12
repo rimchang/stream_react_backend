@@ -14,9 +14,21 @@ def get_profile_data(backend, user, response, *args, **kwargs):
 
         if not user.email and response.get('email'):
             user.email = response.get('email')
-
-        if not profile.age_range and response.get('age_range'):
-            profile.age_range = response.get('age_range')
+            
+        if not profile.name and response.get('name'):
+            profile.name = response.get('name')
+            
+        #if not profile.age_range and response.get('age_range'):    
+        if response.get('age_range'):
+            age_range = response.get('age_range')
+            try:
+                profile.age_range_min = age_range["min"]
+            except:
+                pass
+            try:
+                profile.age_range_max = age_range["max"]
+            except:
+                pass
 
         #if not profile.gender and response.get('gender'):
         if response.get('gender'):

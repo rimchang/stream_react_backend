@@ -14,7 +14,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset=models.Comment.objects.all()
     serializer_class=serializers.CommentSerializer
     
-class UploadViewSet(viewsets.ModelViewSet):
+class UploadViewSet(viewsets.ReadOnlyModelViewSet):
     """
     이 뷰셋은 `list`와 `create`, `retrieve`, `update`, 'destroy` 기능을 자동으로 지원합니다
 
@@ -26,7 +26,20 @@ class UploadViewSet(viewsets.ModelViewSet):
         if actor_id and actor_id != 'false' and actor_id != '1':
             return models.Upload.objects.filter(user_id=actor_id).order_by('-created_at')
         return models.Upload.objects.all().order_by('-created_at')
+
+class UploadCreateViewSet(viewsets.ModelViewSet):
+    """
+    이 뷰셋은 `list`와 `create`, `retrieve`, `update`, 'destroy` 기능을 자동으로 지원합니다
+
+    """
+    serializer_class=serializers.UploadCreateSerializer
     
+    def get_queryset(self):
+        actor_id = self.request.GET.get('actor_id')
+        if actor_id and actor_id != 'false' and actor_id != '1':
+            return models.Upload.objects.filter(user_id=actor_id).order_by('-created_at')
+        return models.Upload.objects.all().order_by('-created_at')
+
 class LikeViewSet(viewsets.ModelViewSet):
     """
     이 뷰셋은 `list`와 `create`, `retrieve`, `update`, 'destroy` 기능을 자동으로 지원합니다

@@ -9,40 +9,65 @@ class BaseModelSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):  
     id = serializers.ReadOnlyField()
-    class Meta:
+    class Meta(BaseModelSerializer.Meta):
         model = models.Comment
         fields = ('id','user_id','upload_id','comment')
 
-
-class UploadSerializer(serializers.ModelSerializer): 
-    id = serializers.ReadOnlyField()
-    #image_url = serializers.SerializerMethodField('get_image_url')
-    comments = serializers.SlugRelatedField(many=True,read_only=True,slug_field='comment')
-    
-    class Meta(BaseModelSerializer.Meta):
-        model = models.Upload
-        #fields = ('id','user_id','image_file','image_url','caption','location','latitude','longitude','comments')
-        fields = ('id','user_id','image_file','caption','location','latitude','longitude','comments','created_at','modified_at')
-
-
-
 class LikeSerializer(serializers.ModelSerializer):  
     id = serializers.ReadOnlyField()
-    class Meta:
+    class Meta(BaseModelSerializer.Meta):
         model = models.Like
         fields = ('id','user_id','upload_id')
 
 class FollowSerializer(serializers.ModelSerializer):  
     id = serializers.ReadOnlyField()
-    class Meta:
+    class Meta(BaseModelSerializer.Meta):
         model = models.Follow
         fields = ('id','user_id','follower_id')
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserProfile
+        fields = ('user','name','age_range_min','age_range_max','gender','locale','link','profile_photo')
+
 class UserSerializer(serializers.ModelSerializer):  
     id = serializers.ReadOnlyField()
+    
+    userprofile = UserProfileSerializer()
+    
     class Meta:
         model = User
-        fields = ('id', 'username')
+        fields = ('id', 'username','email','first_name','last_name','userprofile')
+"""
+    def create(self, validated_data):
+        profile_data = validated_data.pop('userprofile')
+        user = User.objects.create(**validated_data)
+        models.UserProfile.objects.create(user=user, **profile_data)
+        return User
+"""
+
+
+class UploadSerializer(serializers.ModelSerializer): 
+    id = serializers.ReadOnlyField()
+    #image_url = serializers.SerializerMethodField('get_image_url')
+    comments = CommentSerializer(many=True,read_only=True)
+    
+    user_id = UserSerializer(read_only=True)
+    
+    class Meta(BaseModelSerializer.Meta):
+        model = models.Upload
+        fields = ('id','user_id','image_file','caption','location','latitude','longitude','comments','created_at','modified_at')
+        
+class UploadCreateSerializer(serializers.ModelSerializer): 
+    id = serializers.ReadOnlyField()
+    #image_url = serializers.SerializerMethodField('get_image_url')
+    comments = CommentSerializer(many=True,read_only=True)
+
+    class Meta(BaseModelSerializer.Meta):
+        model = models.Upload
+        fields = ('id','user_id','image_file','caption','location','latitude','longitude','comments','created_at','modified_at')
+
+
 
 
 from actstream.models import Action
@@ -68,5 +93,6 @@ class ActionSerializer(serializers.ModelSerializer):
     target = GenericRelatedField(read_only=True)
     action_object = GenericRelatedField(read_only=True)
 
-    class Meta:
+    class Meta(BaseModelSerializer.Meta):
         model = Action
+        fields = ('actor','verb','target','action_object')

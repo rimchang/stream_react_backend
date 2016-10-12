@@ -17,13 +17,31 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
 
+import settings
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', TemplateView.as_view(template_name='index.html')),
     url(r'^api/', include('api.urls')),
     url(r'^auth/', include('rest_framework_social_oauth2.urls')),
+    
+    # for serve media file when debug false https://groups.google.com/forum/#!topic/django-oscar/CiujM572GuU
+    url(r'^media/(?P<path>.*)$','django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),
 ]
 
-from django.conf import settings
-from django.conf.urls.static import static
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+"""
+if not settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+"""
+
+"""
+if settings.DEBUG:
+    urlpatterns = [
+        url(r'^admin/', include(admin.site.urls)),
+        url(r'^$', TemplateView.as_view(template_name='index.html')),
+        url(r'^api/', include('api.urls')),
+        url(r'^auth/', include('rest_framework_social_oauth2.urls')),
+        url(r'^media/(?P<path>.*)$','django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),
+    ]
+"""

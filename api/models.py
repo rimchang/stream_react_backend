@@ -56,7 +56,7 @@ class Search(BaseModel):
 	search_text = models.TextField(null=False)
 
 class Upload(BaseModel):
-	user_id = models.ForeignKey('auth.User')
+	user_id = models.ForeignKey('auth.User', related_name='user_id')
 	image_file = models.ImageField(upload_to='original/%Y/%m/%d')
 	caption = models.TextField(max_length=500, blank=True)
 	location = models.CharField(max_length=120)
@@ -87,7 +87,9 @@ class Hashtag(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, primary_key=True)
-    age_range = models.CharField(max_length=160,null=True)
+    name = models.CharField(max_length=160,null=True)
+    age_range_max = models.IntegerField(blank=True, null=True)
+    age_range_min = models.IntegerField(blank=True, null=True)
     gender = models.CharField(max_length=160,null=True)
     locale = models.CharField(max_length=160,null=True)
     link = models.CharField(max_length=160,null=True)

@@ -4,11 +4,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = '8pfjn-mek-^#aec)i5*x8i#ft0nip&!wns$4md15reh!2d%++j'
 
-DEBUG=False
-#DEBUG = os.environ.get('DEBUG', 'on') == 'on'
+#DEBUG=False
+DEBUG = os.environ.get('DEBUG', 'on') == 'on'
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['*']
 
+#for front error  Response to preflight request doesn't pass access control check: A wildcard '*'
+#ALLOWED_HOSTS = ['http://stream-react-front-rimchang.c9users.io','stream-react-backend-2-rimchang.c9users.io']
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -132,14 +134,14 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Facebook configuration
-SOCIAL_AUTH_FACEBOOK_KEY = '1411426919164023'
-SOCIAL_AUTH_FACEBOOK_SECRET = '2d655c466e3193edac9ea21f5d445602'
+SOCIAL_AUTH_FACEBOOK_KEY = '1588756591429680'
+SOCIAL_AUTH_FACEBOOK_SECRET = '5fef423c0b4f353565f43978878af11b'
 
 # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from facebook. Email is not sent by default, to get it, you must request the email permission:
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'locale': 'ru_RU',
+    'locale': 'ko_KR',
     'fields': 'id, name, email, age_range, gender ,locale, link'
 }
 
@@ -163,10 +165,9 @@ SOCIAL_AUTH_PIPELINE = (
 
 
 )
-
+# caution it is'nt facebook it need to be Facebook
 PROPRIETARY_BACKEND_NAME="Facebook"
 
-CORS_ORIGIN_ALLOW_ALL = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_statics')
 
@@ -174,3 +175,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+
+#for cors 
+
+CORS_ORIGIN_ALLOW_ALL = True
