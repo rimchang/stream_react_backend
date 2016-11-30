@@ -60,3 +60,6 @@ def get_profile_avatar(backend, user, response, *args, **kwargs):
                 profile.save()
             except HTTPError:
                 pass
+            
+            
+            

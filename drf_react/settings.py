@@ -4,8 +4,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = '8pfjn-mek-^#aec)i5*x8i#ft0nip&!wns$4md15reh!2d%++j'
 
-#DEBUG=False
-DEBUG = os.environ.get('DEBUG', 'on') == 'on'
+DEBUG=False
+#DEBUG = os.environ.get('DEBUG', 'on') == 'on'
 
 ALLOWED_HOSTS = ['*']
 
@@ -167,15 +167,12 @@ SOCIAL_AUTH_PIPELINE = (
 )
 # caution it is'nt facebook it need to be Facebook
 PROPRIETARY_BACKEND_NAME="Facebook"
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 
+#for cors 
+CORS_ORIGIN_ALLOW_ALL = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_statics')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
-
-#for cors 
-
-CORS_ORIGIN_ALLOW_ALL = True
